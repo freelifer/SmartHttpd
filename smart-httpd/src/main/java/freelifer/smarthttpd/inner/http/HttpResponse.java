@@ -10,9 +10,7 @@ import freelifer.smarthttpd.inner.context.Response;
 public class HttpResponse implements Response {
 
     private SelectionKey key;
-    //内容类型  defalut 为text/html
     private String contentType = "text/html";
-    //响应码  defalut 为200
     private int StatuCode = 200;
     private String statuCodeStr = "OK";
     private String htmlFile = "";

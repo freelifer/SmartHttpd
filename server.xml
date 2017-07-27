@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<server version="1.0" name="android-service">
+    <!--port 指定服务器端要创建的端口号，并在这个断口监听来自客户端的请求-->
+    <!--minProcessors 服务器启动时创建的处理请求的线程数-->
+    <!--maxProcessors 最大可以创建的处理请求的线程数-->
+    <!--enableLookups 如果为true，则可以通过调用request.getRemoteHost()进行DNS查询来得到远程客户端的实际主机名，若为false则不进行DNS查询，而是返回其ip地址-->
+    <!--redirectPort 指定服务器正在处理http请求时收到了一个SSL传输请求后重定向的端口号-->
+    <!--acceptCount 指定当所有可以使用的处理请求的线程数都被使用时，可以放到处理队列中的请求数，超过这个数的请求将不予处理-->
+    <!--connectionTimeout 指定超时的时间数(以毫秒为单位)-->
+    <connector port="80" minProcessors="1" maxProcessors="1"
+        enableLookups="false" redirectPort="" acceptCount="0"
+        connectionTimeout="5000"/>
+
+    <application name="default package name">
+        <servlet>
+            <url>*.do</url>
+            <servlet-class>com.moreservlets.TestServlet</servlet-class>
+        </servlet>
+    </application>
+</server>

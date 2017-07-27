@@ -23,15 +23,15 @@ public class Logger {
 
     // 07-26 19:40:23.425 3196-3577/? D/WifiHW: wpa_ctrl_request reply=RSSI=-57
     public void i(String format, Object... args) {
-        if (debug) {
+        if (!debug) {
             return;
         }
-        String msg = String.format(FORMAT + format, new Date(), "I", tag, args);
+        String msg = String.format(FORMAT, new Date(), "I", tag) + String.format(format, args);
         System.out.println(msg);
     }
 
     public void e(String format, Object... args) {
-        String msg = String.format(FORMAT + format, new Date(), "E", tag, args);
+        String msg = String.format(FORMAT, new Date(), "E", tag) + String.format(format, args);
         System.out.println(msg);
     }
 

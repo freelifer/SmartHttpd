@@ -39,5 +39,4 @@ public abstract class Context {
     public Response getResponse() {
         return response;
     }
-
 }

@@ -12,7 +12,9 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.Set;
 
+import freelifer.smarthttpd.inner.Application;
 import freelifer.smarthttpd.inner.log.Logger;
+import freelifer.smarthttpd.inner.model.Server;
 
 /**
  * @author kzhu on 2017/7/26.
@@ -22,19 +24,23 @@ public class HttpServer implements Runnable {
 
     private Logger logger = Logger.getLogger(true, HttpServer.class);
 
-    public HttpServer(boolean interrupted) {
+    private final Server server;
+    private final Application application;
+    public HttpServer(boolean interrupted, Server server) {
         this.interrupted = interrupted;
+        this.server = server;
+        this.application = new Application();
     }
 
     @Override
     public void run() {
+        doApplicationCreate();
         try {
             // 加油
             Selector selector = Selector.open();
             ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
             ServerSocket serverSocket = serverSocketChannel.socket();
-            String portStr = "80";
-//            String portStr = XMLUtil.getRootElement("server.xml").element("port").getText();
+            String portStr = server.getPort();
             serverSocket.setReuseAddress(true);
             try {
                 serverSocket.bind(new InetSocketAddress(Integer.parseInt(portStr)));
@@ -93,6 +99,13 @@ public class HttpServer implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void doApplicationCreate() {
+        if (application == null) {
+            throw new NullPointerException("HttpServer Application is null");
+        }
+        application.onCreate();
     }
 
     private String receive(SocketChannel socketChannel) throws Exception {

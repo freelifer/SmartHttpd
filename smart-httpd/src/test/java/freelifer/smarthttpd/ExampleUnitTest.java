@@ -3,9 +3,15 @@ package freelifer.smarthttpd;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
+import freelifer.smarthttpd.common.Converter;
 import freelifer.smarthttpd.inner.http.HttpServer;
 import freelifer.smarthttpd.inner.log.Logger;
+import freelifer.smarthttpd.inner.managerimpl.ConfigManagerImpl;
+import freelifer.smarthttpd.sdk.SmartHttpd;
 
 import static org.junit.Assert.*;
 
@@ -21,25 +27,37 @@ public class ExampleUnitTest {
     }
 
     @Test
-    public void logi() {
-        // 加油
-        Logger log = Logger.getLogger(true, ExampleUnitTest.class);
-        log.i("Hi, %s.", "kzhu");
-
-        new Thread(new HttpServer(false)).start();
-
-        try {
-            Thread.sleep(Long.MAX_VALUE);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public void server_start() {
+        SmartHttpd.init(false, "server.xml", new Converter<String, InputStream>() {
+            @Override
+            public InputStream cover(String value) {
+                try {
+                    return new FileInputStream(value);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        });
     }
 
 
     @Test
     public void config_manager() {
-        File file = new File("server.xml");
-        System.out.println(file.getAbsolutePath());
-        System.out.println("file exists " + file.exists());
+        ConfigManagerImpl configManager = new ConfigManagerImpl();
+        configManager.setConfigFile("server.xml");
+        configManager.setConverter(new Converter<String, InputStream>() {
+            @Override
+            public InputStream cover(String value) {
+                try {
+                    return new FileInputStream(value);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        });
+
+        configManager.parse();
     }
 }

@@ -13,7 +13,7 @@
 
     <application name="default package name">
         <servlet>
-            <url>*.do</url>
+            <url>/</url>
             <servlet-class>com.moreservlets.TestServlet</servlet-class>
         </servlet>
     </application>

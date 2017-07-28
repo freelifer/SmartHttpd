@@ -11,12 +11,10 @@ import freelifer.smarthttpd.inner.manager.IServiceManager;
  */
 public class ServiceManagerImpl implements IServiceManager {
 
-    static final Logger log = Logger.getLogger(true, ServiceManager.class);
+    private Map<String, Object> managerMap;
 
-    private Map<String, Object> managerMap = new HashMap<>();
-
-    ServiceManagerImpl() {
-        managerMap.put(CONFIG_MANAGER, new ConfigManagerImpl());
+    public ServiceManagerImpl(Map<String, Object> managerMap) {
+        this.managerMap = managerMap;
     }
 
     @SuppressWarnings("unchecked")
